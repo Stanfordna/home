@@ -5,12 +5,20 @@ PROMPT_DIRTRIM=1
 RED='\e[1;31m'
 GREEN='\e[1;32m'
 YELLOW='\e[1;33m'
+DEBUG='\e[1;33m'
 BLUE='\e[1;34m'
 MAGENTA='\e[1;35m'
 CYAN='\e[1;36m'
 NC='\e[0m'
 
-PS1="\[$BLUE\]\t \w λ> \[$CYAN\]"
+output_git_branch() {
+    branch=`git branch --show-current 2> /dev/null`
+    if [ "$branch" != "" ]
+    then
+        printf "(%s) " "$branch"
+    fi
+}
+export PS1="\\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
 
 # simple aliases
 alias reload='source ~/.bashrc'
@@ -27,21 +35,26 @@ function regard() {
     # Stages specified file(s), including wildcards, to git tracking.
     # Starts a .gitignore that ignores everything if one isn't present
     # Appends specified files to gitignore, preceded by '!'. Regard!
-    ! git rev-parse && set +f && \
-        echo "No git repo found. Start one with `$ git init`" && \
+    if ! git rev-parse 
+    then
+        set +f
+        echo "No git repo found. Start one with `$ git init`"
         return 1
+    fi
 
     # cgpath - translate C:/ to /c/
     git_repo_dir=$(cygpath `git rev-parse --show-toplevel`)
 
     if [ ! -f "$git_repo_dir/.gitignore" ]
     then
-        printf '# ~/.gitignore\n*\n!.gitignore\n' > "$git_repo_dir/.gitignore"
+        printf "# $git_repo_dir/.gitignore"'\n/*\n!.gitignore\n' > "$git_repo_dir/.gitignore"
+        println $GREEN ".gitignore created. Everything excluded except .gitignore." \
+                       "All tracked filepaths will need to be added to .gitignore preceded by '!'"
+        git add $git_repo_dir/.gitignore
     fi
 
     if [ ! -z "$@" ]
     then
-        println $YELLOW $@
         # this was the primary reason for set -f (no wildcard expansion)
         for addpath in $@
         do
@@ -49,12 +62,9 @@ function regard() {
             set +f
             # get filepath as absolute path (first path match if wildcard)
             abs_path=$(echo `realpath $addpath` | awk '{ print $1 }')
-            println $YELLOW "Abs Path: " $abs_path
-            if [ ! -f $abs_path ] || \
+            if [ ! -e $abs_path ] || \
                 [[ ! "$abs_path" =~ ^$git_repo_dir ]]
             then
-println $YELLOW "git_repo_dir: " $git_repo_dir
-
                 # don't allow nonexistant files or those outside git repo
                 valid_path=false
             fi
@@ -75,26 +85,43 @@ println $YELLOW "git_repo_dir: " $git_repo_dir
                     # remove useless /./, replace with /
                     addpath="${addpath/\/.\//\/}"
                 done
-
+                
                 # now remove parent directory links from path
                 while [[ $addpath =~ /[^/.]+/../ ]]
                 do
                     # replace /dir/../ with /
-                    addpath=$(sed 's:/[^./]+/../:/:g' <<< "$addpath")
+                    addpath=$(sed 's:/[^./]\+/\.\./:/:g' <<< "$addpath")
                 done
+
                 # now make addpath relative to .gitignore by removing $git_repo_dir
                 addpath=${addpath/$git_repo_dir\//}
+                return_dir=`pwd`
                 cd $git_repo_dir
 
                 # Check if path is exempted in .gitignore before appending
-                if [ ! grep -x "^!$addpath$" "$git_repo_dir/.gitignore" &> /dev/null ]
+                if ! grep -qx "^\!$addpath$" .gitignore
                 then
-                    echo '!$addpath' >> .gitignore
+                    # git needs us to un-ignore all the directories above addpath
+                    parentdirpath=$addpath
+                    unignore=\!$addpath
+                    while ! grep -qx "^\!$parentdirpath$" .gitignore
+                    do
+                        temp=$(sed 's:/[^/]*$::' <<< "$parentdirpath")
+                        if [ $temp == $parentdirpath ]
+                        then
+                            break
+                        else
+                            parentdirpath=$temp
+                        fi
+                        unignore=\!$parentdirpath$'\n'$unignore
+                    done
+                    echo "$unignore" >> .gitignore
                     git add $addpath
                 fi
+                cd $return_dir
             else
-                printf "${GREEN}%s\n" \
-                       "Invalid PATH"
+                printf "${MAGENTA}%s\n" \
+                       "Invalid filepath specified"
             fi
         done
     else
@@ -114,6 +141,27 @@ recycle() {
 }
 export -f recycle
 
+alias fuckoff='debug-rm'
+debug-rm() {
+    if [ -z "$@" ]
+    then
+        println $MAGENTA "You're an idiot."
+        return 1
+    fi
+    while [ ! -z "$1" ]
+    do
+        if [ -f "$1" ]
+        then
+            sed -in '/^\s*println $DEBUG .*$/d' $1
+            println $MAGENTA "Debug text in $1 is fuk."
+        else
+            println $GREEN "File \"$1\" doesn't exist. Specify a file that exists."
+        fi
+        shift
+    done
+}
+export -f debug-rm
+
 println() {
     case $1 in
         "$RED")
@@ -125,6 +173,10 @@ println() {
             printf "${GREEN}%s\n" "$@"
         ;;
         "$YELLOW")
+            shift
+            printf "${YELLOW}%s\n" "$@"
+        ;;
+        "$DEBUG")
             shift
             printf "${YELLOW}%s\n" "$@"
         ;;
