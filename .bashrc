@@ -1,3 +1,7 @@
+export UBUNTU_ROOT='//wsl.localhost/Ubuntu'
+export UBUNTU_HOME='//wsl.localhost/Ubuntu/home/stanf'
+export DOCKER_VOLUMES_HOME='//wsl.localhost/docker-desktop-data/data/docker/volumes'
+
 # number of ancestor directories to show with -w option
 PROMPT_DIRTRIM=1
 
