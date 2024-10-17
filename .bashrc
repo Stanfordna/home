@@ -1,6 +1,11 @@
+#! ~/.bashrc
+
 export UBUNTU_ROOT='//wsl.localhost/Ubuntu'
 export UBUNTU_HOME='//wsl.localhost/Ubuntu/home/stanf'
 export DOCKER_VOLUMES_HOME='//wsl.localhost/docker-desktop-data/data/docker/volumes'
+export ANGRY_ALPACA_HOME='/c/Users/stanf/Projects/React/angry-alpaca'
+export PYTHON_PROJECT_HOME='/c/Users/stanf/Projects/Python'
+export PROMPT_COMMAND="history -a"
 
 # number of ancestor directories to show with -w option
 PROMPT_DIRTRIM=1
@@ -23,12 +28,6 @@ output_git_branch() {
     fi
 }
 export PS1="\\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
-
-# simple aliases
-alias reload='source ~/.bashrc'
-alias vba='source .venv/Scripts/activate'
-
-
 # preserve wildcard char in these so as not to clutter .gitignore
 alias regard='set -f; regard'
 alias rgd='set -f; rgd'
@@ -219,3 +218,12 @@ println() {
 }
 export -f println
 
+# generic aliases
+alias reload='source ~/.bash_profile'
+alias vba='source .venv/Scripts/activate'
+alias path='echo $PATH | sed "s/:/\n/g"'
+alias images='docker image ls'
+alias img='docker image ls'
+alias containers='docker ps'
+alias cnt='docker ps'
+cd .
