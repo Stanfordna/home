@@ -20,7 +20,7 @@ MAGENTA='\e[1;35m'
 CYAN='\e[1;36m'
 NC='\e[0m'
 
-output_git_branch() {
+function output_git_branch() {
     branch=`git branch --show-current 2> /dev/null`
     if [ "$branch" != "" ]
     then
@@ -28,7 +28,8 @@ output_git_branch() {
     fi
 }
 export PS1="\\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
-# preserve wildcard char in these so as not to clutter .gitignore
+
+# preserve wildcard char in regard with set -f so as not to clutter .gitignore
 alias regard='set -f; regard'
 alias rgd='set -f; rgd'
 function rgd() {
@@ -139,7 +140,7 @@ export -f rgd
 export -f regard
 
 alias rm='recycle'
-recycle() {
+function recycle() {
     if [ $1 == "-r" ]
     then
         mv $@ ~/Trash
@@ -161,7 +162,7 @@ recycle() {
 export -f recycle
 
 alias fuckoff='debug-rm'
-debug-rm() {
+function debug-rm() {
     if [ -z "$@" ]
     then
         println $MAGENTA "You're an idiot."
@@ -181,7 +182,7 @@ debug-rm() {
 }
 export -f debug-rm
 
-println() {
+function println() {
     case $1 in
         "$RED")
             shift
@@ -217,6 +218,18 @@ println() {
     esac
 }
 export -f println
+
+function ask() {
+    question=$1
+    read -r -p "$question [y/n]: " response
+    if [[ "$response" =~ ^([Yy][Es]?[Ss]?|[Yy])$ ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+export -f ask
 
 # generic aliases
 alias reload='source ~/.bash_profile'
