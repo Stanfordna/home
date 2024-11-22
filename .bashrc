@@ -239,4 +239,5 @@ alias images='docker image ls'
 alias img='docker image ls'
 alias containers='docker ps'
 alias cnt='docker ps'
+alias echopath='echo $PATH | sed "s/:/\n/g"'
 cd .
