@@ -6,6 +6,10 @@ export DOCKER_VOLUMES_HOME='//wsl.localhost/docker-desktop-data/data/docker/volu
 export ANGRY_ALPACA_HOME='/c/Users/stanf/Projects/React/angry-alpaca'
 export PYTHON_PROJECT_HOME='/c/Users/stanf/Projects/Python'
 export PROMPT_COMMAND="history -a"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 
 # number of ancestor directories to show with -w option
 PROMPT_DIRTRIM=1
@@ -232,6 +236,8 @@ function ask() {
 export -f ask
 
 # generic aliases
+alias ..='cd ..'
+alias ...='cd ../..'
 alias reload='source ~/.bash_profile'
 alias vba='source .venv/Scripts/activate'
 alias path='echo $PATH | sed "s/:/\n/g"'
