@@ -31,7 +31,7 @@ function output_git_branch() {
         printf "(%s) " "$branch"
     fi
 }
-export PS1="\\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
+export PS1="\\[$CYAN\\][$?] \\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
 
 # preserve wildcard char in regard with set -f so as not to clutter .gitignore
 alias regard='set -f; regard'
