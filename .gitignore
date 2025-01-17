@@ -4,3 +4,8 @@
 !.bash_profile
 !.gitignore
 !README.md
+!scripts
+!scripts
+!scripts/ask.sh
+!scripts
+!scripts/*
