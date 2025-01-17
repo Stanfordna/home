@@ -10,11 +10,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+source ~/scripts/println.sh
+source ~/scripts/regard.sh
+# preserve wildcard char in regard with set -f so as not to clutter .gitignore
+alias regard='set -f; regard'
+alias rgd='set -f; rgd'
+source ~/scripts/recycle.sh
+alias rm='\rm; echo "Consider moving to ~/Trash with `rc`"'
+alias rc='recycle'
+source ~/scripts/debug-rm.sh
+alias fuckoff='debug-rm'
+source ~/scripts/ask.sh
 
 # number of ancestor directories to show with -w option
 PROMPT_DIRTRIM=1
-
-
 
 function output_git_branch() {
     branch=`git branch --show-current 2> /dev/null`
@@ -25,19 +34,6 @@ function output_git_branch() {
 }
 # 24hr prompt with lambda character and bright blue text
 export PS1="\\[$CYAN\\][$?] \\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\\[$BLUE\\]λ> \\[$CYAN\\]"
-
-# preserve wildcard char in regard with set -f so as not to clutter .gitignore
-source scripts/regard.sh
-alias regard='set -f; regard'
-alias rgd='set -f; rgd'
-source scripts/recycle.sh
-alias rm='\rm; echo "Consider moving to ~/Trash with `rc`"'
-alias rc='recycle'
-source scripts/debug-rm.sh
-alias fuckoff='debug-rm'
-source scripts/ask.sh
-
-
 
 # generic aliases
 alias ..='cd ..'
