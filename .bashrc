@@ -16,7 +16,7 @@ source ~/scripts/regard.sh
 alias regard='set -f; regard'
 alias rgd='set -f; rgd'
 source ~/scripts/recycle.sh
-alias rm='echo "Consider moving to ~/Trash with `rc`": \rm'
+alias rm='echo "Consider moving to ~/Trash instead with '\'rc\''"; \rm'
 alias rc='recycle'
 source ~/scripts/debug-rm.sh
 alias fuckoff='debug-rm'
