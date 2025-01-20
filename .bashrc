@@ -38,6 +38,7 @@ export PS1="\\[$CYAN\\][$?] \\[$BLUE\\]\t \w \\[$YELLOW\\]\$(output_git_branch)\
 # generic aliases
 alias ..='cd ..'
 alias ...='cd ../..'
+alias bashrc='code ~/.bashrc'
 alias reload='source ~/.bash_profile'
 alias vba='source .venv/Scripts/activate'
 alias path='echo $PATH | sed "s/:/\n/g"'
