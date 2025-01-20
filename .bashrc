@@ -21,6 +21,7 @@ alias rc='recycle'
 source ~/scripts/debug-rm.sh
 alias fuckoff='debug-rm'
 source ~/scripts/ask.sh
+source ~/scripts/sslkeygen.sh
 
 # number of ancestor directories to show with -w option
 PROMPT_DIRTRIM=1
