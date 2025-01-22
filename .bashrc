@@ -4,6 +4,7 @@ export UBUNTU_ROOT='//wsl.localhost/Ubuntu'
 export UBUNTU_HOME='//wsl.localhost/Ubuntu/home/stanf'
 export DOCKER_VOLUMES_HOME='//wsl.localhost/docker-desktop-data/data/docker/volumes'
 export ANGRY_ALPACA_HOME='/c/Users/stanf/Projects/React/angry-alpaca'
+export ALPACA_PORT=42069
 export PYTHON_PROJECT_HOME='/c/Users/stanf/Projects/Python'
 export PROMPT_COMMAND="history -a"
 export NVM_DIR="$HOME/.nvm"
