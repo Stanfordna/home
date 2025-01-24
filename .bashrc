@@ -1,11 +1,17 @@
 #! ~/.bashrc
-
+local_network=`ipconfig | grep  "^\s*Default Gateway[. :0-9]*\.[1-9]\+$" | grep --only-matching "[0-9]\+\.[0-9]\+\.[0-9]\+\."`
+export GATEWAY_IP="${local_network}1"
+export ALPACA_IP_ADDR=`ipconfig | grep "IPv4.*$local_network" | grep --only-matching "[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+"`
+export ALPACA_PORT=42069
+[ -d '/c/Users/stanf/Projects/React/angry-alpaca' ] && \
+    export ANGRY_ALPACA_HOME='/c/Users/stanf/Projects/React/angry-alpaca' # dev location
+[ -d '/c/Projects/angry-alpaca' ] && \
+    export ANGRY_ALPACA_HOME='/c/Projects/angry-alpaca' # prefer prod location
+[ -d '/c/Users/stanf/Projects/Python' ] && \
+    export PYTHON_PROJECT_HOME='/c/Users/stanf/Projects/Python'
 export UBUNTU_ROOT='//wsl.localhost/Ubuntu'
 export UBUNTU_HOME='//wsl.localhost/Ubuntu/home/stanf'
 export DOCKER_VOLUMES_HOME='//wsl.localhost/docker-desktop-data/data/docker/volumes'
-export ANGRY_ALPACA_HOME='/c/Users/stanf/Projects/React/angry-alpaca'
-export ALPACA_PORT=42069
-export PYTHON_PROJECT_HOME='/c/Users/stanf/Projects/Python'
 export PROMPT_COMMAND="history -a"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
