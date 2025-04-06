@@ -1,10 +1,15 @@
 #!/bin/bash
 function sslkeygen() {
-    if [ -z "$@" ]
+    if [ -z "$@" || "$1" = "-h" || "$1" = "--help" ]
     then
         println $MAGENTA "Specify a prefix and expiration for the rsa key and cert.\n" \
                          "Usage: sslkeygen <key_and_cert_prefix> [days_to_expiration]"
-        return 1
+        if [ -z "$@" ]
+        then
+            return 1
+        else
+            return 0
+        fi
     fi
     
     days_to_expiration=365
