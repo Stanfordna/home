@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 restart-docker-desktop() {
     # shutdown Docker Desktop for Windows
+    date
     echo "No runnning WSL distro found. Using tskill to close Docker Desktop Error Windows."
     while [ -z "`ps -W | grep 'Docker Desktop'`" ]
     do
@@ -8,14 +9,13 @@ restart-docker-desktop() {
         tskill $process
     done
     # start Docker Desktop for Windows
-    echo "Starting up Docker Desktop."
+    echo "Running Docker Desktop executable."
     "C:\Program Files\Docker\Docker\Docker Desktop.exe"
 }
 
-echo "Watching for Docker Desktop to crash"
-
+echo "Watching for Dumb Docker Desktop to crash"
 while $true
 do
-    wsl --list --running || restart-docker-desktop
+    wsl --list --running -q > /dev/null || restart-docker-desktop
     sleep 90
 done
