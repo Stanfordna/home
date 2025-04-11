@@ -18,5 +18,5 @@ echo "Watching for Dumb Docker Desktop to crash"
 while $true
 do
     wsl --list --running > /dev/null || restart-docker-desktop
-    sleep 90
+    sleep 600
 done
