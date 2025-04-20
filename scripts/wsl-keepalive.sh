@@ -12,6 +12,8 @@ restart-docker-desktop() {
     # start Docker Desktop for Windows
     echo "Running Docker Desktop executable."
     "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+    sleep 120
+    echo "Back to watching for Dumb Docker Desktop to crash"
 }
 
 echo "Watching for Dumb Docker Desktop to crash"
